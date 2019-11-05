@@ -1,13 +1,6 @@
 <template>
   <div id="app">
-    <EmailDropdown
-      class="some"
-      name="myemail"
-      v-model="myemail"
-      :domains="domains"
-      :maxSuggestions="5"
-      :defaultDomains="defaultDomains"
-    />
+    <EmailDropdown :domains="domains" :maxSuggestions="5" :defaultDomains="defaultDomains" />
   </div>
 </template>
 
@@ -21,7 +14,6 @@ export default {
   },
   data() {
     return {
-      myemail: "juan@",
       domains: [
         "126.com",
         "139.com",
@@ -75,3 +67,12 @@ export default {
   }
 };
 </script>
+
+<style>
+#app {
+  margin-top: 300px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+</style>
