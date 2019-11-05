@@ -56,7 +56,7 @@ export default {
       validator(num) {
         const isInteger = Number.isInteger(num);
         if (!isInteger) {
-          console.error(
+          throw new Error(
             `Invalid prop: type check failed for prop "maxSuggestions". Expected Integer but got ${num} as value.`
           );
         }

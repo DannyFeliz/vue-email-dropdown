@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "bundle": "./node_modules/@vue/cli-service/bin/vue-cli-service.js build --target lib --name vue-email-dropdown ./src/components/EmailDropdown.vue",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
