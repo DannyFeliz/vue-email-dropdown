@@ -28,7 +28,6 @@ export default {
         "hggame.com",
         "hotmail.co.uk",
         "hotmail.com",
-        "hotmail.com",
         "hotmail.fr",
         "hotmail.it",
         "kcidc.com",
@@ -56,13 +55,7 @@ export default {
         "ymail.com",
         "ytgame.com"
       ],
-      defaultDomains: [
-        "gmail.com",
-        "hotmail.com",
-        "msn.com",
-        "outlook.com",
-        "yahoo.com"
-      ]
+      defaultDomains: ["gmail.com", "hotmail.com", "msn.com", "outlook.com", "yahoo.com"]
     };
   }
 };
