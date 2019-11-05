@@ -75,9 +75,7 @@ export default {
   },
   computed: {
     shouldShowList() {
-      return (
-        this.includesAt && this.domainsList.length && !this.optionIsSelected
-      );
+      return this.includesAt && this.domainsList.length && !this.optionIsSelected && this.emailWithoutDomain;
     },
     includesAt() {
       return this.email.includes("@");
