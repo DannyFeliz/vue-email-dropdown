@@ -1,6 +1,12 @@
 # vue-email-dropdown
 
+> A Vue component for autocomplete email domains
+
+> [<img src="https://img.shields.io/npm/dt/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown) > [<img src="https://img.shields.io/npm/v/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
+
 # Demo
+
+[![Edit Demo vue-email-dropdown](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-template-lrkul?fontsize=14)
 
 ![Demo](https://raw.githubusercontent.com/DannyFeliz/vue-email-dropdown/master/demo/demo.gif)
 
@@ -48,7 +54,61 @@
     </tbody>
 </table>
 
-## Project setup
+## Installation
+
+```bash
+npm install vue-email-dropdown --save
+
+# or with yarn
+
+yarn global add vue-email-dropdown
+```
+
+## Usage
+
+```vue
+<template>
+  <EmailDropdown :domains="domains" :defaultDomains="defaultDomains" />
+</template>
+
+<script>
+// Import package
+import EmailDropdown from "vue-email-dropdown";
+// Import basic styles (optional)
+import "vue-email-dropdown/dist/vue-email-dropdown.css";
+import EmailDropdown from "vue-email-dropdown";
+
+export default {
+  components: {
+    EmailDropdown
+  },
+  data() {
+    return {
+      domains: [
+        "yourcompany.com",
+        "gmx.de",
+        "googlemail.com",
+        "hotmail.fr",
+        "hotmail.it",
+        "web.de",
+        "yahoo.co.in",
+        "yahoo.com",
+        "yahoo.in"
+      ],
+      defaultDomains: [
+        "gmail.com",
+        "hotmail.com",
+        "msn.com",
+        "outlook.com",
+        "yahoo.com"
+      ]
+    };
+  }
+};
+</script>
+```
+
+## Development setup
 
 ```
 npm install
@@ -81,3 +141,11 @@ npm run lint
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+# Contributing
+
+1. Fork it (<https://github.com/dannyfeliz/vue-email-dropdown/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
