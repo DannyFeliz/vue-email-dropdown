@@ -1,11 +1,31 @@
 {
   "name": "vue-email-dropdown",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "main": "./dist/vue-email-dropdown.umd.min.js",
+  "files": [
+    "dist/vue-email-dropdown.umd.min.js"
+  ],
+  "keywords": [
+    "vue",
+    "vue-dropdown",
+    "vue-email",
+    "vue-email-dropdown",
+    "autocomplete",
+    "autocomplete-email",
+    "vue-autocomplete-email"
+  ],
+  "author": "Danny Feliz <dannyfeliz08@gmail.com>",
+  "license": "MIT",
+  "bugs": "https://github.com/DannyFeliz/vue-email-dropdown/issues/new",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DannyFeliz/vue-email-dropdown"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "bundle": "./node_modules/@vue/cli-service/bin/vue-cli-service.js build --target lib --name vue-email-dropdown ./src/components/EmailDropdown.vue",
+    "publish": "npm publish --access public",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
