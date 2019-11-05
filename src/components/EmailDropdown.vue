@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     handleInputEvent({ target: { value: email } }) {
-      this.email = email;
+      this.email = String(email).trim();
     },
     convertCharToText(event) {
       const INVALID_KEYS = {
