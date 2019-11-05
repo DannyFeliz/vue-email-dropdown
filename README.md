@@ -2,7 +2,7 @@
 
 > A Vue component for autocomplete email domains
 
-> [<img src="https://img.shields.io/npm/dt/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown) 
+> [<img src="https://img.shields.io/npm/dt/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
 > [<img src="https://img.shields.io/npm/v/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
 
 # Demo
@@ -62,7 +62,7 @@ npm install vue-email-dropdown --save
 
 # or with yarn
 
-yarn global add vue-email-dropdown
+yarn add vue-email-dropdown
 ```
 
 ## Usage
