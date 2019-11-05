@@ -2,8 +2,8 @@
 
 > A Vue component for autocomplete email domains
 
-> [<img src="https://img.shields.io/npm/dt/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
-> [<img src="https://img.shields.io/npm/v/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
+[<img src="https://img.shields.io/npm/dt/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
+[<img src="https://img.shields.io/npm/v/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
 
 # Demo
 
@@ -77,7 +77,6 @@ yarn add vue-email-dropdown
 import EmailDropdown from "vue-email-dropdown";
 // Import basic styles (optional)
 import "vue-email-dropdown/dist/vue-email-dropdown.css";
-import EmailDropdown from "vue-email-dropdown";
 
 export default {
   components: {
