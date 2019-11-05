@@ -1,5 +1,8 @@
 # vue-email-dropdown
 
+# Demo
+  ![Demo](https://github.com/DannyFeliz/vue-email-dropdown/blob/master/demo/demo.gif)
+
 ## Project setup
 ```
 npm install
