@@ -2,7 +2,7 @@
 
 # Demo
 
-![Demo](https://github.com/DannyFeliz/vue-email-dropdown/blob/master/demo/demo.gif)
+![Demo](https://raw.githubusercontent.com/DannyFeliz/vue-email-dropdown/master/demo/demo.gif)
 
 # Props
 
