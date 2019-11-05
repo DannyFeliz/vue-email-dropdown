@@ -87,9 +87,7 @@ export default {
       return this.email.split("@")[1] || "";
     },
     fakeDomains() {
-      return this.domainsList.map(
-        domain => `${this.emailWithoutDomain}@${domain}`
-      );
+      return this.domainsList.map(domain => `${this.emailWithoutDomain}@${domain}`);
     },
     optionIsSelected() {
       return this.fakeDomains.includes(this.email);
@@ -98,9 +96,7 @@ export default {
       if (!this.includesAt) return [];
 
       if (!this.emailDomain.length && this.defaultDomains.length) {
-        return this.defaultDomains
-          .sort((a, b) => a.localeCompare(b))
-          .slice(0, this.maxSuggestions);
+        return this.defaultDomains.sort((a, b) => a.localeCompare(b)).slice(0, this.maxSuggestions);
       }
 
       return this.domains
@@ -126,9 +122,7 @@ export default {
         DOWN: 40
       };
       const eventObject = keycoder.fromEvent(event);
-      const isValidEventChar =
-        eventObject &&
-        !Object.values(INVALID_KEYS).includes(eventObject.charCode);
+      const isValidEventChar = eventObject && !Object.values(INVALID_KEYS).includes(eventObject.charCode);
 
       if (isValidEventChar) {
         const char = keycoder.eventToCharacter(event);
@@ -160,23 +154,15 @@ export default {
     },
 
     scroll(direction) {
-      if (!this.shouldShowList) return;
-      const length = this.domainsList.length;
+      if (!this.shouldShowList || this.shouldFocusInput(direction)) return;
 
-      if (this.shouldFocusInput(direction)) {
-        return;
-      }
-
-      if (direction == "up" && this.listIndex == 0) {
-        this.$refs.email.focus();
-        this.resetFocusFromList();
-        return;
-      }
+      const shouldScrollUp = direction == "up" && this.listIndex >= 1;
+      const shouldSchollDown = direction == "down" && this.listIndex < this.domainsList.length - 1;
 
       if (this.isFirstFocus) {
-        if (direction == "up" && this.listIndex >= 1) {
+        if (shouldScrollUp) {
           this.listIndex -= 1;
-        } else if (direction == "down" && this.listIndex < length - 1) {
+        } else if (shouldSchollDown) {
           this.listIndex += 1;
         }
       } else {
@@ -184,9 +170,7 @@ export default {
       }
 
       this.$nextTick(() => {
-        document
-          .querySelector(`[data-dropdown-item-index="${this.listIndex}"]`)
-          .focus();
+        document.querySelector(`[data-dropdown-item-index="${this.listIndex}"]`).focus();
       });
     }
   }
