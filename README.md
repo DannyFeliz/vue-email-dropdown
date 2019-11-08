@@ -52,6 +52,13 @@
         <td>4</td>
         <td>How many domain suggestions should displayed.</td>
     </tr>
+    <tr>
+        <td>closeOnClickOutside</td>
+        <td>Boolean</td>
+        <td>False</td>
+        <td>true</td>
+        <td>Hide the suggestion list if you click outside the list.</td>
+    </tr>
     </tbody>
 </table>
 
@@ -95,13 +102,7 @@ export default {
         "yahoo.com",
         "yahoo.in"
       ],
-      defaultDomains: [
-        "gmail.com",
-        "hotmail.com",
-        "msn.com",
-        "outlook.com",
-        "yahoo.com"
-      ]
+      defaultDomains: ["gmail.com", "hotmail.com", "msn.com", "outlook.com", "yahoo.com"]
     };
   }
 };
