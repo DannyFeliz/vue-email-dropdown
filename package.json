@@ -33,6 +33,7 @@
   "dependencies": {
     "core-js": "^3.3.2",
     "keycoder": "^1.1.1",
+    "v-click-outside": "^2.1.5",
     "vue": "^2.6.10"
   },
   "devDependencies": {
