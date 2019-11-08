@@ -1,4 +1,0 @@
-{
-  cleanup: false,
-  publish: false
-}
