@@ -1,11 +1,12 @@
 <template>
-  <div class="email-dropdown-wrapper">
+  <div class="email-dropdown-wrapper" v-click-outside="clickOutsideConfig">
     <input
       v-bind="$attrs"
       v-on="$listeners"
       ref="email"
       type="email"
       :value="email"
+      @focus="() => (clickedOutside = false)"
       @input="handleInputEvent"
       @keyup.up="scroll('up')"
       @keyup.down="scroll('down')"
@@ -13,25 +14,33 @@
       autocomplete="off"
       autocapitalize="off"
     />
-    <ul v-if="shouldShowList" class="email-dropdown-list">
-      <li
-        v-for="(domain, index) in domainsList"
-        :key="index"
-        :tabindex="index"
-        :data-dropdown-item-index="index"
-        class="email-dropdown-item"
-        @click="handleOptionSelection(domain)"
-        @keyup.enter="handleOptionSelection(domain)"
-        @keyup.up="scroll('up')"
-        @keyup.down="scroll('down')"
-        @keyup="convertCharToText"
-      >{{ emailWithoutDomain }}@{{ domain }}</li>
-    </ul>
+    <div class="email-dropdown-list-container" :class="{ hide: clickedOutside }">
+      <ul v-if="shouldShowList" class="email-dropdown-list">
+        <li
+          v-for="(domain, index) in domainsList"
+          :key="index"
+          :tabindex="index"
+          :data-dropdown-item-index="index"
+          class="email-dropdown-item"
+          @click="handleOptionSelection(domain)"
+          @keyup.enter="handleOptionSelection(domain)"
+          @keyup.up="scroll('up')"
+          @keyup.down="scroll('down')"
+          @keyup="convertCharToText"
+        >
+          {{ emailWithoutDomain }}@{{ domain }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import Vue from "vue";
+import vClickOutside from "v-click-outside";
 import keycoder from "keycoder";
+
+Vue.use(vClickOutside);
 
 export default {
   name: "EmailDropdown",
@@ -63,6 +72,10 @@ export default {
 
         return isInteger;
       }
+    },
+    closeOnClickOutside: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -70,7 +83,14 @@ export default {
       email: this.initialValue,
       isOptionSelected: false,
       listIndex: 0,
-      isFirstFocus: false
+      isFirstFocus: false,
+      clickedOutside: false,
+      clickOutsideConfig: {
+        handler: this.handler,
+        middleware: this.middleware,
+        events: ["dblclick", "click"],
+        isActive: true
+      }
     };
   },
   computed: {
@@ -112,9 +132,6 @@ export default {
     }
   },
   methods: {
-    handleInputEvent({ target: { value: email } }) {
-      this.email = email;
-    },
     convertCharToText(event) {
       const INVALID_KEYS = {
         ENTER: 13,
@@ -132,9 +149,11 @@ export default {
         }
       }
     },
-    resetFocusFromList() {
-      this.isFirstFocus = false;
-      this.listIndex = 0;
+    handler() {
+      this.clickedOutside = true;
+    },
+    handleInputEvent({ target: { value: email } }) {
+      this.email = email;
     },
     handleOptionSelection(domain) {
       this.email = `${this.emailWithoutDomain}@${domain}`;
@@ -142,17 +161,16 @@ export default {
       this.$refs.email.focus();
       this.listIndex = 0;
     },
-    shouldFocusInput(direction) {
-      const shouldFocus = direction === "up" && this.listIndex == 0;
+    middleware({ target }) {
+      const isDropdownItem =
+        target.className === "email-dropdown-item" && target.parentNode.className.includes("email-dropdown-list");
 
-      if (shouldFocus) {
-        this.$refs.email.focus();
-        this.resetFocusFromList();
-      }
-
-      return shouldFocus;
+      return this.closeOnClickOutside && !isDropdownItem;
     },
-
+    resetFocusFromList() {
+      this.isFirstFocus = false;
+      this.listIndex = 0;
+    },
     scroll(direction) {
       if (!this.shouldShowList || this.shouldFocusInput(direction)) return;
 
@@ -172,6 +190,16 @@ export default {
       this.$nextTick(() => {
         document.querySelector(`[data-dropdown-item-index="${this.listIndex}"]`).focus();
       });
+    },
+    shouldFocusInput(direction) {
+      const shouldFocus = direction === "up" && this.listIndex == 0;
+
+      if (shouldFocus) {
+        this.$refs.email.focus();
+        this.resetFocusFromList();
+      }
+
+      return shouldFocus;
     }
   }
 };
@@ -184,25 +212,38 @@ export default {
   justify-content: center;
   align-content: center;
 
+  .email-dropdown-list-container {
+    position: relative;
+    height: 0;
+
+    &.hide {
+      display: none;
+    }
+  }
+
   .email-dropdown-list {
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10000;
+    background-color: #fff;
+    overflow: hidden;
     list-style: none;
     margin: 0;
     padding: 0;
-    text-align: left;
-
-    &:focus {
-      background-color: green;
-    }
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 
     .email-dropdown-item {
       cursor: pointer;
 
       &:hover {
-        background-color: #ccc;
+        background-color: #f2f2f2;
       }
 
       &:focus {
-        background-color: gainsboro;
+        background-color: #f6f6f6;
       }
     }
   }
