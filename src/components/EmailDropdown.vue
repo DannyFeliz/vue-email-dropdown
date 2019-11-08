@@ -98,30 +98,34 @@ export default {
       return this.includesAt && this.domainsList.length && !this.optionIsSelected && this.emailWithoutDomain;
     },
     includesAt() {
-      return this.email.includes("@");
+      return this.email.toLowerCase().includes("@");
     },
     emailWithoutDomain() {
-      return this.email.split("@")[0];
+      return this.email.toLowerCase().split("@")[0];
     },
     emailDomain() {
-      return this.email.split("@")[1] || "";
+      return this.email.toLowerCase().split("@")[1] || "";
     },
     fakeDomains() {
-      return this.domainsList.map(domain => `${this.emailWithoutDomain}@${domain}`);
+      return this.domainsList.map(domain => `${this.emailWithoutDomain}@${domain}`.toLowerCase());
     },
     optionIsSelected() {
-      return this.fakeDomains.includes(this.email);
+      return this.fakeDomains.includes(this.email.toLowerCase());
     },
     domainsList() {
       if (!this.includesAt) return [];
 
       if (!this.emailDomain.length && this.defaultDomains.length) {
-        return this.defaultDomains.sort((a, b) => a.localeCompare(b)).slice(0, this.maxSuggestions);
+        return this.defaultDomains.sort((a, b) => {
+          return a.toLowerCase().localeCompare(b.toLowerCase())
+        }).slice(0, this.maxSuggestions);
       }
 
       return this.domains
         .filter(domain => domain.startsWith(this.emailDomain))
-        .sort((a, b) => a.localeCompare(b))
+        .sort((a, b) => {
+          return a.toLowerCase().localeCompare(b.toLowerCase())
+        })
         .slice(0, this.maxSuggestions);
     }
   },
