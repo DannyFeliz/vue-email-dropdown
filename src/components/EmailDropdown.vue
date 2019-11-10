@@ -46,8 +46,13 @@ export default {
   name: "EmailDropdown",
   props: {
     initialValue: {
-      type: String,
-      default: ""
+      default: "",
+      validator(value) {
+        if (value instanceof InputEvent) {
+          value = value.target.value;
+        }
+        return typeof value === "string";
+      }
     },
     domains: {
       type: Array,
@@ -116,16 +121,14 @@ export default {
       if (!this.includesAt) return [];
 
       if (!this.emailDomain.length && this.defaultDomains.length) {
-        return this.defaultDomains.sort((a, b) => {
-          return a.toLowerCase().localeCompare(b.toLowerCase())
-        }).slice(0, this.maxSuggestions);
+        return this.defaultDomains
+          .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+          .slice(0, this.maxSuggestions);
       }
 
       return this.domains
         .filter(domain => domain.startsWith(this.emailDomain))
-        .sort((a, b) => {
-          return a.toLowerCase().localeCompare(b.toLowerCase())
-        })
+        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         .slice(0, this.maxSuggestions);
     }
   },
