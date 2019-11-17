@@ -2,6 +2,11 @@ import { expect } from "chai";
 import { shallowMount } from "@vue/test-utils";
 import EmailDropdown from "@/components/EmailDropdown.vue";
 
+const deepEqualInAnyOrder = require("deep-equal-in-any-order");
+const chai = require("chai");
+
+chai.use(deepEqualInAnyOrder);
+
 describe("EmailDropdown.vue", () => {
   let propsData;
 
@@ -15,7 +20,7 @@ describe("EmailDropdown.vue", () => {
     };
   });
 
-  it("renders without show suggestions", () => {
+  it("renders without show suggestions if the email does not include '@'", () => {
     propsData.initialValue = "hello";
 
     const wrapper = shallowMount(EmailDropdown, {
@@ -60,5 +65,211 @@ describe("EmailDropdown.vue", () => {
 
     expect(wrapper.text()).to.be.empty;
     expect(wrapper.find(".email-dropdown-list").exists()).to.be.false;
+    expect(wrapper.vm.optionIsSelected).to.be.true;
+  });
+
+  it("filter the suggestion list when type in the input", () => {
+    propsData.initialValue = "hello@g";
+    propsData.domains = ["gmail.com", "google.com"];
+
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    expect(wrapper.findAll(".email-dropdown-item")).to.have.length(2);
+    wrapper.find("input").setValue("hello@gma");
+    expect(wrapper.findAll(".email-dropdown-item")).to.have.length(1);
+    expect(wrapper.find(".email-dropdown-item").text()).to.be.equal("hello@gmail.com");
+  });
+
+  it("emits 'input' on email change", () => {
+    propsData.domains = ["gmail.com", "google.com"];
+
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    wrapper.find("input").setValue("hello@gmail");
+    expect(wrapper.emitted().input[0]).to.have.length(1);
+    expect(wrapper.emitted().input[0][0]).to.be.equal("hello@gmail");
+    wrapper.find("input").setValue("hello@gmail.");
+    expect(wrapper.emitted().input[1]).to.have.length(1);
+    expect(wrapper.emitted().input[1][0]).to.be.equal("hello@gmail.");
+  });
+
+  it("hides suggestion list if remove '@' from the email", () => {
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    expect(wrapper.findAll(".email-dropdown-item")).to.have.length(2);
+    wrapper.find("input").setValue("hello");
+    expect(wrapper.find(".email-dropdown-list").exists()).to.be.false;
+  });
+
+  describe("computed", () => {
+    describe("includesAt", () => {
+      it("returns 'true' if email includes '@'", () => {
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.includesAt).to.be.true;
+      });
+
+      it("returns 'false' if email does not includes '@'", () => {
+        propsData.initialValue = "hello";
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.includesAt).to.be.false;
+      });
+    });
+
+    describe("emailWithoutDomain", () => {
+      it("returns the email without domain", () => {
+        propsData.initialValue = "hello@google.com";
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.emailWithoutDomain).to.be.equal("hello");
+      });
+    });
+
+    describe("emailDomain", () => {
+      it("returns the email domain", () => {
+        propsData.initialValue = "hello@google.com";
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.emailDomain).to.be.equal("google.com");
+      });
+    });
+
+    describe("optionIsSelected", () => {
+      it("returns 'true' if the email match an item from the suggestion list", () => {
+        propsData.initialValue = "hello@google.com";
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.optionIsSelected).to.be.true;
+      });
+
+      it("returns 'false' if the email doesn't match an item from the suggestion list", () => {
+        propsData.initialValue = "hello@google.com";
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.optionIsSelected).to.be.true;
+      });
+    });
+
+    describe("domainsList", () => {
+      it("returns an empty array if includesAt is 'false'", () => {
+        propsData.initialValue = "hello";
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.includesAt).to.be.false;
+        expect(wrapper.vm.domainsList).to.be.empty;
+      });
+
+      it("returns default domains if doesn't have domain", () => {
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+        expect(wrapper.vm.includesAt).to.be.true;
+        expect(wrapper.vm.emailDomain).to.be.have.length(0);
+        expect(wrapper.vm.defaultDomains).to.be.have.length.gt(0);
+        expect(wrapper.vm.domainsList).to.deep.equalInAnyOrder(propsData.defaultDomains);
+      });
+
+      it("returns the domains based on 'emailDomain'", () => {
+        propsData.domains = ["google.com", "gmail.com"];
+        propsData.initialValue = "hello@g";
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+        expect(wrapper.vm.includesAt).to.be.true;
+        expect(wrapper.vm.emailDomain).to.be.have.length(1);
+        expect(wrapper.vm.domainsList).to.deep.equalInAnyOrder(propsData.domains);
+      });
+    });
+
+    describe("suggestionList", () => {
+      it("returns a suggestion domain list based on the domain list", () => {
+        propsData.domains = ["google.com", "gmail.com"];
+        propsData.initialValue = "hello@g";
+
+        const expected = ["hello@gmail.com", "hello@google.com"];
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.suggestionList).to.deep.equalInAnyOrder(expected);
+      });
+
+      it("returns a suggestion domain list using the default domains", () => {
+        propsData.defaultDomains = ["yahoo.com", "mns.com"];
+
+        const expected = ["hello@yahoo.com", "hello@mns.com"];
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+        expect(wrapper.vm.includesAt).to.be.true;
+        expect(wrapper.vm.emailDomain).to.be.have.length(0);
+        expect(wrapper.vm.suggestionList).to.deep.equalInAnyOrder(expected);
+      });
+    });
+
+    describe("shouldShowList", () => {
+      it("returns 'true' if domainsList is 'true' and optionIsSelected is 'false'", () => {
+        propsData.initialValue = "hello@";
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.domainsList)
+          .to.be.an("array")
+          .have.length.gt(0);
+        expect(wrapper.vm.optionIsSelected).to.be.false;
+        expect(wrapper.vm.shouldShowList).to.be.true;
+      });
+
+      it("returns 'false' if 'domainsList' is empty", () => {
+        propsData.initialValue = "hello";
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+        expect(wrapper.vm.domainsList)
+          .to.be.an("array")
+          .have.length(0);
+        expect(wrapper.vm.shouldShowList).to.be.false;
+      });
+
+      it("returns 'false' if 'optionIsSelected' is false", () => {
+        propsData.initialValue = "hello";
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.optionIsSelected).to.be.false;
+        expect(wrapper.vm.shouldShowList).to.be.false;
+      });
+    });
   });
 });

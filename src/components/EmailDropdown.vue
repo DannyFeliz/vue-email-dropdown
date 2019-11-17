@@ -46,10 +46,8 @@ export default {
   name: "EmailDropdown",
   props: {
     initialValue: {
-      default: "",
-      validator(value) {
-        return typeof value === "string";
-      }
+      type: String,
+      default: ""
     },
     domains: {
       type: Array,
@@ -97,7 +95,7 @@ export default {
   },
   computed: {
     shouldShowList() {
-      return this.includesAt && this.domainsList.length && !this.optionIsSelected && this.emailWithoutDomain;
+      return Boolean(this.domainsList.length && !this.optionIsSelected);
     },
     includesAt() {
       return this.email.toLowerCase().includes("@");
@@ -108,11 +106,11 @@ export default {
     emailDomain() {
       return this.email.toLowerCase().split("@")[1] || "";
     },
-    fakeDomains() {
+    suggestionList() {
       return this.domainsList.map(domain => `${this.emailWithoutDomain}@${domain}`.toLowerCase());
     },
     optionIsSelected() {
-      return this.fakeDomains.includes(this.email.toLowerCase());
+      return this.suggestionList.includes(this.email.toLowerCase());
     },
     domainsList() {
       if (!this.includesAt) return [];
