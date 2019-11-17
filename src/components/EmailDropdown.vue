@@ -106,11 +106,11 @@ export default {
     emailDomain() {
       return this.email.toLowerCase().split("@")[1] || "";
     },
-    fakeDomains() {
+    suggestionList() {
       return this.domainsList.map(domain => `${this.emailWithoutDomain}@${domain}`.toLowerCase());
     },
     optionIsSelected() {
-      return this.fakeDomains.includes(this.email.toLowerCase());
+      return this.suggestionList.includes(this.email.toLowerCase());
     },
     domainsList() {
       if (!this.includesAt) return [];
