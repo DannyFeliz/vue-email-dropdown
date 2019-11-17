@@ -48,9 +48,6 @@ export default {
     initialValue: {
       default: "",
       validator(value) {
-        if (value instanceof InputEvent) {
-          value = value.target.value;
-        }
         return typeof value === "string";
       }
     },
