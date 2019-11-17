@@ -46,10 +46,8 @@ export default {
   name: "EmailDropdown",
   props: {
     initialValue: {
-      default: "",
-      validator(value) {
-        return typeof value === "string";
-      }
+      type: String,
+      default: ""
     },
     domains: {
       type: Array,
