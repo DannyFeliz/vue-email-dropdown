@@ -28,6 +28,7 @@
     "bundle": "./node_modules/@vue/cli-service/bin/vue-cli-service.js build --target lib --name vue-email-dropdown ./src/components/EmailDropdown.vue",
     "publish": "npm publish --access public",
     "test:unit": "vue-cli-service test:unit",
+    "test:unit:watch": "vue-cli-service test:unit --watch",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
