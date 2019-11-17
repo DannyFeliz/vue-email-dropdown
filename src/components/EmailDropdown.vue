@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     shouldShowList() {
-      return this.includesAt && this.domainsList.length && !this.optionIsSelected && this.emailWithoutDomain;
+      return Boolean(this.domainsList.length && !this.optionIsSelected);
     },
     includesAt() {
       return this.email.toLowerCase().includes("@");
