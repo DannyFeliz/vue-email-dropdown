@@ -1,6 +1,6 @@
 {
   "name": "vue-email-dropdown",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "main": "./dist/vue-email-dropdown.umd.min.js",
   "files": [
     "dist/vue-email-dropdown.umd.min.js",
