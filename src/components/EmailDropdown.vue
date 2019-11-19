@@ -6,7 +6,7 @@
       ref="email"
       type="email"
       :value="email"
-      @focus="() => (clickedOutside = false)"
+      @focus="onInputFocus"
       @input="handleInputEvent"
       @keyup.up="scroll('up')"
       @keyup.down="scroll('down')"
@@ -14,7 +14,7 @@
       autocomplete="off"
       autocapitalize="off"
     />
-    <div class="email-dropdown-list-container" :class="{ hide: clickedOutside }">
+    <div class="email-dropdown-list-container" :class="{ hide: hasclickedOutside }">
       <ul v-if="shouldShowList" class="email-dropdown-list">
         <li
           v-for="(domain, index) in domainsList"
@@ -84,7 +84,7 @@ export default {
       isOptionSelected: false,
       listIndex: 0,
       isFirstFocus: false,
-      clickedOutside: false,
+      hasclickedOutside: false,
       clickOutsideConfig: {
         handler: this.handler,
         middleware: this.middleware,
@@ -152,7 +152,7 @@ export default {
       }
     },
     handler() {
-      this.clickedOutside = true;
+      this.hasclickedOutside = true;
     },
     handleInputEvent({ target: { value: email } }) {
       this.email = email;
@@ -168,6 +168,10 @@ export default {
         target.className === "email-dropdown-item" && target.parentNode.className.includes("email-dropdown-list");
 
       return this.closeOnClickOutside && !isDropdownItem;
+    },
+    onInputFocus() {
+      this.hasclickedOutside = false;
+      this.resetFocusFromList();
     },
     resetFocusFromList() {
       this.isFirstFocus = false;
