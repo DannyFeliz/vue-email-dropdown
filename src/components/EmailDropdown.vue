@@ -243,6 +243,7 @@ export default {
 
     .email-dropdown-item {
       cursor: pointer;
+      padding-left: 2px;
 
       &:hover {
         background-color: #f2f2f2;
