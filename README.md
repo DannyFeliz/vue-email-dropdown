@@ -60,6 +60,13 @@ A Vue component for autocomplete email domains
         <td>true</td>
         <td>Hide the suggestion list if you click outside the list.</td>
     </tr>
+    <tr>
+        <td>inputClasses</td>
+        <td>String|Array|Object</td>
+        <td>False</td>
+        <td>""</td>
+        <td>Classes that will be apply to the email input.</td>
+    </tr>
     </tbody>
 </table>
 

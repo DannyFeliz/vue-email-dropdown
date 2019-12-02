@@ -6,6 +6,7 @@
       ref="email"
       type="email"
       :value="email"
+      :class="inputClasses"
       @focus="onInputFocus"
       @input="handleInputEvent"
       @keyup.up="scroll('up')"
@@ -44,6 +45,7 @@ Vue.use(vClickOutside);
 
 export default {
   name: "EmailDropdown",
+  inheritAttrs: false,
   props: {
     initialValue: {
       type: String,
@@ -76,6 +78,10 @@ export default {
     closeOnClickOutside: {
       type: Boolean,
       default: true
+    },
+    inputClasses: {
+      type: [String, Array, Object],
+      default: ""
     }
   },
   data() {
@@ -240,17 +246,23 @@ export default {
     margin: 0;
     padding: 0;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    border: 0.1px solid darkgrey;
+    box-sizing: border-box;
+    margin-top: -0.9px;
 
     .email-dropdown-item {
       cursor: pointer;
       padding-left: 2px;
+      padding: 2px;
 
-      &:hover {
-        background-color: #f2f2f2;
+      &:first-child {
+        border-top: none;
       }
 
-      &:focus {
-        background-color: #f6f6f6;
+      &:hover, &:focus {
+        background-color: #f2f2f2;
+        border: 0.1px solid darkgrey;
+        box-sizing: border-box;
       }
     }
   }
