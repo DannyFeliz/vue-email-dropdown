@@ -1,3 +1,4 @@
+import Vue from "vue"
 import { expect } from "chai";
 import { shallowMount } from "@vue/test-utils";
 import EmailDropdown from "@/components/EmailDropdown.vue";
@@ -68,7 +69,7 @@ describe("EmailDropdown.vue", () => {
     expect(wrapper.vm.optionIsSelected).to.be.true;
   });
 
-  it("filter the suggestion list when type in the input", () => {
+  it("filter the suggestion list when type in the input", async () => {
     propsData.initialValue = "hello@g";
     propsData.domains = ["gmail.com", "google.com"];
 
@@ -78,34 +79,41 @@ describe("EmailDropdown.vue", () => {
 
     expect(wrapper.findAll(".email-dropdown-item")).to.have.length(2);
     wrapper.find("input").setValue("hello@gma");
+    await Vue.nextTick();
     expect(wrapper.findAll(".email-dropdown-item")).to.have.length(1);
     expect(wrapper.find(".email-dropdown-item").text()).to.be.equal("hello@gmail.com");
   });
 
-  it("emits 'input' on email change", () => {
-    propsData.domains = ["gmail.com", "google.com"];
 
-    const wrapper = shallowMount(EmailDropdown, {
-      propsData
-    });
-
-    wrapper.find("input").setValue("hello@gmail");
-    expect(wrapper.emitted().input[0]).to.have.length(1);
-    expect(wrapper.emitted().input[0][0]).to.be.equal("hello@gmail");
-    wrapper.find("input").setValue("hello@gmail.");
-    expect(wrapper.emitted().input[1]).to.have.length(1);
-    expect(wrapper.emitted().input[1][0]).to.be.equal("hello@gmail.");
-  });
-
-  it("hides suggestion list if remove '@' from the email", () => {
+  it("hides suggestion list if remove '@' from the email", async () => {
     const wrapper = shallowMount(EmailDropdown, {
       propsData
     });
 
     expect(wrapper.findAll(".email-dropdown-item")).to.have.length(2);
     wrapper.find("input").setValue("hello");
+    await Vue.nextTick();
     expect(wrapper.find(".email-dropdown-list").exists()).to.be.false;
   });
+
+  describe("events", () => {
+    it("emits 'input' on email change", async () => {
+      propsData.domains = ["gmail.com", "google.com"];
+  
+      const wrapper = shallowMount(EmailDropdown, {
+        propsData
+      });
+  
+      wrapper.find("input").setValue("hello@gmail");
+      await Vue.nextTick();
+      expect(wrapper.emitted().input[0]).to.have.length(1);
+      expect(wrapper.emitted().input[0][0]).to.be.equal("hello@gmail");
+      wrapper.find("input").setValue("hello@gmail.");
+      await Vue.nextTick();
+      expect(wrapper.emitted().input[1]).to.have.length(1);
+      expect(wrapper.emitted().input[1][0]).to.be.equal("hello@gmail.");
+    });
+  })
 
   describe("computed", () => {
     describe("includesAt", () => {
