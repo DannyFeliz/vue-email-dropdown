@@ -20,7 +20,7 @@
         <li
           v-for="(domain, index) in domainsList"
           :key="index"
-          :tabindex="index"
+          tabindex="-1"
           :data-dropdown-item-index="index"
           class="email-dropdown-item"
           @click="handleOptionSelection(domain)"
