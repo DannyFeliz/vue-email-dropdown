@@ -1,23 +1,15 @@
 <template>
   <div id="app">
-    <EmailDropdown
-      initialValue="some@"
+    <form>
+      <label>Email:</label>
+      <EmailDropdown
+      initialValue=""
       :closeOnClickOutside="clickOutside"
       :domains="domains"
       :maxSuggestions="5"
       :defaultDomains="defaultDomains"
     />
-    <p id="1">Some text 1</p>
-    <p id="2">Some text 2</p>
-    <p id="3">Some text 3</p>
-    <p id="4">Some text 4</p>
-    <p id="5">Some text 5</p>
-    <p id="6">Some text 6</p>
-    <p id="7">Some text 7</p>
-    <p id="8">Some text 8</p>
-    <p id="9">Some text 9</p>
-    <p id="10">Some text 10</p>
-    <input type="checkbox" v-model="clickOutside" />
+    </form>
   </div>
 </template>
 
@@ -81,10 +73,10 @@ export default {
 
 <style lang="scss">
 #app {
+  width: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #f9f9f9;
   p {
     margin: 0;
   }
