@@ -7,10 +7,12 @@
       type="email"
       :value="email"
       :class="inputClasses"
-      @focus="onInputFocus"
+      @focus="handleEmailInputFocus"
+      @blur="handleEmailInputBlur"
       @input="handleInputEvent"
-      @keyup.up="scroll('up')"
-      @keyup.down="scroll('down')"
+      @keyup.up="handleListNavigation('up')"
+      @keyup.down="handleListNavigation('down')"
+      @keyup.esc="handleEscPress"
       autocorrect="off"
       autocomplete="off"
       autocapitalize="off"
@@ -23,10 +25,12 @@
           tabindex="-1"
           :data-dropdown-item-index="index"
           class="email-dropdown-item"
+          :class="{'email-dropdown-item-focus': index === listFocusIndex && !isEmailInputFocused}"
           @click="handleOptionSelection(domain)"
+          @keyup.esc="handleEscPress"
           @keyup.enter="handleOptionSelection(domain)"
-          @keyup.up="scroll('up')"
-          @keyup.down="scroll('down')"
+          @keyup.up="handleListNavigation('up')"
+          @keyup.down="handleListNavigation('down')"
           @keyup="convertCharToText"
         >
           {{ emailWithoutDomain }}@{{ domain }}
@@ -88,11 +92,13 @@ export default {
     return {
       email: this.initialValue,
       isOptionSelected: false,
-      listIndex: 0,
+      isEscPressed: false,
+      isEmailInputFocused: false,
+      listFocusIndex: 0,
       isFirstFocus: false,
       hasclickedOutside: false,
       clickOutsideConfig: {
-        handler: this.handler,
+        handler: this.clickOutsideHandler,
         middleware: this.middleware,
         events: ["dblclick", "click"],
         isActive: true
@@ -101,7 +107,7 @@ export default {
   },
   computed: {
     shouldShowList() {
-      return Boolean(this.domainsList.length && !this.optionIsSelected);
+      return Boolean(this.domainsList.length && !this.optionIsSelected && !this.isEscPressed);
     },
     includesAt() {
       return this.email.toLowerCase().includes("@");
@@ -136,7 +142,10 @@ export default {
   watch: {
     email() {
       this.$emit("input", this.email);
-      this.resetFocusFromList();
+      this.resetFocusIndex();
+      if (this.isEscPressed) {
+        this.isEscPressed = false
+      }
     }
   },
   methods: {
@@ -157,7 +166,7 @@ export default {
         }
       }
     },
-    handler() {
+    clickOutsideHandler() {
       this.hasclickedOutside = true;
     },
     handleInputEvent({ target: { value: email } }) {
@@ -167,7 +176,7 @@ export default {
       this.email = `${this.emailWithoutDomain}@${domain}`;
       this.isOptionSelected = true;
       this.$refs.email.focus();
-      this.listIndex = 0;
+      this.listFocusIndex = 0;
     },
     middleware({ target }) {
       const isDropdownItem =
@@ -175,40 +184,48 @@ export default {
 
       return this.closeOnClickOutside && !isDropdownItem;
     },
-    onInputFocus() {
+    handleEscPress() {
+      this.isEscPressed = true;
+      this.$refs.email.focus();
+    },
+    handleEmailInputFocus() {
+      this.isEmailInputFocused = true;
       this.hasclickedOutside = false;
-      this.resetFocusFromList();
+      this.resetFocusIndex();
     },
-    resetFocusFromList() {
+    handleEmailInputBlur() {
+      this.isEmailInputFocused = false;
+    },
+    resetFocusIndex() {
       this.isFirstFocus = false;
-      this.listIndex = 0;
+      this.listFocusIndex = 0;
     },
-    scroll(direction) {
+    handleListNavigation(direction) {
       if (!this.shouldShowList || this.shouldFocusInput(direction)) return;
 
-      const shouldScrollUp = direction == "up" && this.listIndex >= 1;
-      const shouldSchollDown = direction == "down" && this.listIndex < this.domainsList.length - 1;
+      const shouldScrollUp = direction == "up" && this.listFocusIndex >= 1;
+      const shouldSchollDown = direction == "down" && this.listFocusIndex < this.domainsList.length - 1;
 
       if (this.isFirstFocus) {
         if (shouldScrollUp) {
-          this.listIndex -= 1;
+          this.listFocusIndex -= 1;
         } else if (shouldSchollDown) {
-          this.listIndex += 1;
+          this.listFocusIndex += 1;
         }
       } else {
         this.isFirstFocus = true;
       }
 
       this.$nextTick(() => {
-        document.querySelector(`[data-dropdown-item-index="${this.listIndex}"]`).focus();
+        document.querySelector(`[data-dropdown-item-index="${this.listFocusIndex}"]`).focus();
       });
     },
     shouldFocusInput(direction) {
-      const shouldFocus = direction === "up" && this.listIndex == 0;
+      const shouldFocus = direction === "up" && this.listFocusIndex == 0;
 
       if (shouldFocus) {
         this.$refs.email.focus();
-        this.resetFocusFromList();
+        this.resetFocusIndex();
       }
 
       return shouldFocus;
