@@ -26,7 +26,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "bundle": "./node_modules/@vue/cli-service/bin/vue-cli-service.js build --target lib --name vue-email-dropdown ./src/components/EmailDropdown.vue",
-    "generate-tag": "./node_modules/np/source/cli.js",
+    "generate-tag": "npm run bundle && ./node_modules/np/source/cli.js",
     "publish": "npm publish --access public",
     "test": "vue-cli-service test:unit",
     "test:watch": "vue-cli-service test:unit --watch",
