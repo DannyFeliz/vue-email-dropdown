@@ -6,19 +6,19 @@ A Vue component for autocomplete email domains
 [<img src="https://img.shields.io/npm/dt/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
 [<img src="https://img.shields.io/npm/v/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
 
-# Demo
-
-[![Edit Demo vue-email-dropdown](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-template-lrkul?fontsize=14)
-
-![Demo](https://raw.githubusercontent.com/DannyFeliz/vue-email-dropdown/master/demo/demo.gif)
-
-# Some Features
+# Features
 - Allows passing a list of domains to be used in for the suggestions.
 - Allows passing a list of default domains that are going to be used when type `@`.
 - Closes the list by pressing <kbd>Esc</kbd>.
 - Allows the navigate the list by pressing <kbd>Up</kbd> / <kbd>Down</kbd>.
 - Closes the list on click outside.
 - Allows configuring the list size.
+
+# Demo
+
+[![Edit Demo vue-email-dropdown](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-template-lrkul?fontsize=14)
+
+![Demo](https://raw.githubusercontent.com/DannyFeliz/vue-email-dropdown/master/demo/demo.gif)
 
 # Props
 
