@@ -18,7 +18,7 @@ A Vue component for autocomplete email domains
 
 [![Edit Demo vue-email-dropdown](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-template-lrkul?fontsize=14)
 
-![Demo](https://raw.githubusercontent.com/DannyFeliz/vue-email-dropdown/master/demo/demo.gif)
+![Demo](https://raw.githubusercontent.com/DannyFeliz/vue-email-dropdown/master/demo/demo-documentation.gif)
 
 # Props
 
