@@ -32,9 +32,7 @@
           @keyup.up="handleListNavigation('up')"
           @keyup.down="handleListNavigation('down')"
           @keyup="convertCharToText"
-        >
-          {{ emailWithoutDomain }}@{{ domain }}
-        </li>
+        >{{ emailWithoutDomain }}@{{ domain }}</li>
       </ul>
     </div>
   </div>
@@ -125,12 +123,18 @@ export default {
       return this.suggestionList.includes(this.email.toLowerCase());
     },
     domainsList() {
-      if (!this.includesAt) return [];
+      if (!this.includesAt) {
+        return [];
+      }
 
       if (!this.emailDomain.length && this.defaultDomains.length) {
         return this.defaultDomains
           .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
           .slice(0, this.maxSuggestions);
+      }
+
+      if (!this.emailDomain) {
+        return [];
       }
 
       return this.domains
@@ -144,7 +148,7 @@ export default {
       this.$emit("input", this.email);
       this.resetFocusIndex();
       if (this.isEscPressed) {
-        this.isEscPressed = false
+        this.isEscPressed = false;
       }
     }
   },
@@ -276,7 +280,8 @@ export default {
         border-top: none;
       }
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         background-color: #f2f2f2;
         border: 0.1px solid darkgrey;
         box-sizing: border-box;
