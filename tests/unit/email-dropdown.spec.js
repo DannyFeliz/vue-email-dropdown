@@ -1,4 +1,4 @@
-import Vue from "vue"
+import Vue from "vue";
 import { expect } from "chai";
 import { shallowMount } from "@vue/test-utils";
 import EmailDropdown from "@/components/EmailDropdown.vue";
@@ -84,7 +84,6 @@ describe("EmailDropdown.vue", () => {
     expect(wrapper.find(".email-dropdown-item").text()).to.be.equal("hello@gmail.com");
   });
 
-
   it("hides suggestion list if remove '@' from the email", async () => {
     const wrapper = shallowMount(EmailDropdown, {
       propsData
@@ -99,11 +98,11 @@ describe("EmailDropdown.vue", () => {
   describe("events", () => {
     it("emits 'input' on email change", async () => {
       propsData.domains = ["gmail.com", "google.com"];
-  
+
       const wrapper = shallowMount(EmailDropdown, {
         propsData
       });
-  
+
       wrapper.find("input").setValue("hello@gmail");
       await Vue.nextTick();
       expect(wrapper.emitted().input[0]).to.have.length(1);
@@ -113,7 +112,7 @@ describe("EmailDropdown.vue", () => {
       expect(wrapper.emitted().input[1]).to.have.length(1);
       expect(wrapper.emitted().input[1][0]).to.be.equal("hello@gmail.");
     });
-  })
+  });
 
   describe("computed", () => {
     describe("includesAt", () => {
@@ -214,6 +213,18 @@ describe("EmailDropdown.vue", () => {
         expect(wrapper.vm.includesAt).to.be.true;
         expect(wrapper.vm.emailDomain).to.be.have.length(1);
         expect(wrapper.vm.domainsList).to.deep.equalInAnyOrder(propsData.domains);
+      });
+
+      it("return an empty list if doesn't have default domains", () => {
+        propsData.domains = ["google.com", "gmail.com"];
+        propsData.defaultDomains = [];
+        propsData.initialValue = "hello@";
+
+        const wrapper = shallowMount(EmailDropdown, {
+          propsData
+        });
+
+        expect(wrapper.vm.domainsList).to.be.have.length(0);
       });
     });
 
