@@ -12,6 +12,14 @@ A Vue component for autocomplete email domains
 
 ![Demo](https://raw.githubusercontent.com/DannyFeliz/vue-email-dropdown/master/demo/demo.gif)
 
+# Some Features
+- Allows passing a list of domains to be used in for the suggestions.
+- Allows passing a list of default domains that are going to be used when type `@`.
+- Closes the list by pressing <kbd>Esc</kbd>.
+- Allows the navigate the list by pressing <kbd>Up</kbd> / <kbd>Down</kbd>.
+- Closes the list on click outside.
+- Allows configuring the list size.
+
 # Props
 
 <table>
