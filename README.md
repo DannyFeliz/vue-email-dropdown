@@ -75,6 +75,13 @@ A Vue component for autocomplete email domains
         <td>""</td>
         <td>Classes that will be apply to the email input.</td>
     </tr>
+        <tr>
+        <td>showCleanButton</td>
+        <td>Bolean</td>
+        <td>False</td>
+        <td>""</td>
+        <td>Show button to clean text</td>
+    </tr>
     </tbody>
 </table>
 
