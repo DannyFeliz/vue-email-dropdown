@@ -1,22 +1,25 @@
 <template>
   <div class="email-dropdown-wrapper" v-click-outside="clickOutsideConfig">
-    <input
-      v-bind="$attrs"
-      v-on="$listeners"
-      ref="email"
-      type="email"
-      :value="email"
-      :class="inputClasses"
-      @focus="handleEmailInputFocus"
-      @blur="handleEmailInputBlur"
-      @input="handleInputEvent"
-      @keyup.up="handleListNavigation('up')"
-      @keyup.down="handleListNavigation('down')"
-      @keyup.esc="handleEscPress"
-      autocorrect="off"
-      autocomplete="off"
-      autocapitalize="off"
-    />
+    <div>
+      <input
+        v-bind="$attrs"
+        v-on="$listeners"
+        ref="email"
+        type="email"
+        :value="email"
+        :class="inputClasses"
+        @focus="handleEmailInputFocus"
+        @blur="handleEmailInputBlur"
+        @input="handleInputEvent"
+        @keyup.up="handleListNavigation('up')"
+        @keyup.down="handleListNavigation('down')"
+        @keyup.esc="handleEscPress"
+        autocorrect="off"
+        autocomplete="off"
+        autocapitalize="off"
+      />
+      <button v-if="showCleanButton" @click="clearInput" value="x" />
+    </div>
     <div class="email-dropdown-list-container" :class="{ hide: hasclickedOutside }">
       <ul v-if="shouldShowList" class="email-dropdown-list">
         <li
@@ -52,6 +55,10 @@ export default {
     initialValue: {
       type: String,
       default: ""
+    },
+    showCleanButton: {
+      type: Boolean,
+      default: false
     },
     domains: {
       type: Array,
@@ -233,6 +240,10 @@ export default {
       }
 
       return shouldFocus;
+    },
+    clearInput(e) {
+      e.preventDefault();
+      this.email = '';
     }
   }
 };

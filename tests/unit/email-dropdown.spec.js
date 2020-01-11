@@ -112,6 +112,21 @@ describe("EmailDropdown.vue", () => {
       expect(wrapper.emitted().input[1]).to.have.length(1);
       expect(wrapper.emitted().input[1][0]).to.be.equal("hello@gmail.");
     });
+
+    it("returns 'true' if input is empty after clicking clean (X) button", async () => {
+      propsData.domains = ["gmail.com", "google.com"];
+      propsData.showCleanButton = true;
+
+      const wrapper = shallowMount(EmailDropdown, {
+        propsData
+      });
+
+      wrapper.find("input").setValue("hello");      
+      await Vue.nextTick();
+      wrapper.find("button").trigger("click");      
+      await Vue.nextTick();
+      expect(wrapper.vm.$refs.email.value).to.be.equal('');
+    });
   });
 
   describe("computed", () => {
