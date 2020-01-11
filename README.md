@@ -79,7 +79,7 @@ A Vue component for autocomplete email domains
         <td>showCleanButton</td>
         <td>Boolean</td>
         <td>False</td>
-        <td>""</td>
+        <td>False</td>
         <td>Show button to clean text</td>
     </tr>
     </tbody>
