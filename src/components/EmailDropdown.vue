@@ -30,7 +30,10 @@
           @keyup.up="handleListNavigation('up')"
           @keyup.down="handleListNavigation('down')"
           @keyup="convertCharToText"
-        >{{ emailWithoutDomain }}@{{ domain }}</li>
+        >
+          <span class="email-dropdown-item-username">{{ username }}</span
+          ><span class="email-dropdown-item-domain">@{{ domain }}</span>
+        </li>
       </ul>
     </div>
   </div>
@@ -87,9 +90,7 @@ export default {
   data() {
     return {
       email: this.initialValue,
-      isOptionSelected: false,
       isEscPressed: false,
-      isEmailInputFocused: false,
       listFocusIndex: 0,
       isFirstFocus: false,
       hasclickedOutside: false,
@@ -103,21 +104,21 @@ export default {
   },
   computed: {
     shouldShowList() {
-      return Boolean(this.domainsList.length && !this.optionIsSelected && !this.isEscPressed);
+      return Boolean(this.domainsList.length && !this.isOptionSelected && !this.isEscPressed);
     },
     includesAt() {
       return this.email.toLowerCase().includes("@");
     },
-    emailWithoutDomain() {
+    username() {
       return this.email.toLowerCase().split("@")[0];
     },
-    emailDomain() {
+    domain() {
       return this.email.toLowerCase().split("@")[1] || "";
     },
     suggestionList() {
-      return this.domainsList.map(domain => `${this.emailWithoutDomain}@${domain}`.toLowerCase());
+      return this.domainsList.map(domain => `${this.username}@${domain}`.toLowerCase());
     },
-    optionIsSelected() {
+    isOptionSelected() {
       return this.suggestionList.includes(this.email.toLowerCase());
     },
     domainsList() {
@@ -129,12 +130,12 @@ export default {
         return this.defaultDomains.slice(0, this.maxSuggestions);
       }
 
-      if (!this.emailDomain) {
+      if (!this.domain) {
         return [];
       }
 
       return this.domains
-        .filter(domain => domain.startsWith(this.emailDomain))
+        .filter(domain => domain.startsWith(this.domain))
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         .slice(0, this.maxSuggestions);
     }
@@ -173,8 +174,7 @@ export default {
       this.email = email;
     },
     handleOptionSelection(domain) {
-      this.email = `${this.emailWithoutDomain}@${domain}`;
-      this.isOptionSelected = true;
+      this.email = `${this.username}@${domain}`;
       this.$refs.email.focus();
       this.listFocusIndex = 0;
     },
@@ -189,12 +189,8 @@ export default {
       this.$refs.email.focus();
     },
     handleEmailInputFocus() {
-      this.isEmailInputFocused = true;
       this.hasclickedOutside = false;
       this.resetFocusIndex();
-    },
-    handleEmailInputBlur() {
-      this.isEmailInputFocused = false;
     },
     resetFocusIndex() {
       this.isFirstFocus = false;
