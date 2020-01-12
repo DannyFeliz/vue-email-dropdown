@@ -24,7 +24,6 @@
           tabindex="-1"
           :data-dropdown-item-index="index"
           class="email-dropdown-item"
-          :class="{'email-dropdown-item-focus': index === listFocusIndex && !isEmailInputFocused}"
           @click="handleOptionSelection(domain)"
           @keyup.esc="handleEscPress"
           @keyup.enter="handleOptionSelection(domain)"
