@@ -8,7 +8,6 @@
       :value="email"
       :class="inputClasses"
       @focus="handleEmailInputFocus"
-      @blur="handleEmailInputBlur"
       @input="handleInputEvent"
       @keyup.up="handleListNavigation('up')"
       @keyup.down="handleListNavigation('down')"
@@ -244,6 +243,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-content: center;
+
+  input {
+    text-overflow: ellipsis;
+  }
 
   .email-dropdown-list-container {
     position: relative;
