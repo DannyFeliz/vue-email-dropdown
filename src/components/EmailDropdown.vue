@@ -282,6 +282,15 @@ export default {
         border: 0.1px solid darkgrey;
         box-sizing: border-box;
       }
+
+      &-username {
+        color: #999;
+      }
+
+      &-domain {
+        color: #101920;
+        font-weight: 500;
+      }
     }
   }
 }
