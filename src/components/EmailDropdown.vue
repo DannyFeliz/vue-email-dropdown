@@ -125,10 +125,8 @@ export default {
         return [];
       }
 
-      if (!this.emailDomain.length && this.defaultDomains.length) {
-        return this.defaultDomains
-          .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-          .slice(0, this.maxSuggestions);
+      if (!this.domain.length && this.defaultDomains.length) {
+        return this.defaultDomains.slice(0, this.maxSuggestions);
       }
 
       if (!this.emailDomain) {
