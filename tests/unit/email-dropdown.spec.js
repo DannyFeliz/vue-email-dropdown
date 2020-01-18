@@ -108,6 +108,16 @@ describe("EmailDropdown.vue", () => {
     expect(wrapper.vm.$data.email).to.be.empty;
   });
 
+  it("hides the x if the email field is clearable but empty", async () => {
+    propsData.initialValue = "";
+    propsData.clearable = true;
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    expect(wrapper.find("button").exists()).to.be.false;
+  });
+
   it("hides the x if the input not clearable", async () => {
     propsData.initialValue = "hello";
     propsData.clearable = false;
