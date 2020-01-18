@@ -22,7 +22,6 @@ export default {
   data() {
     return {
       clickOutside: false,
-      showCleanButton: true,
       domains: [
         "126.com",
         "139.com",
