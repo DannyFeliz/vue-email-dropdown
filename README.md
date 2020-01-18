@@ -7,6 +7,7 @@ A Vue component for autocomplete email domains
 [<img src="https://img.shields.io/npm/v/vue-email-dropdown.svg">](https://www.npmjs.com/package/vue-email-dropdown)
 
 # Features
+
 - Allows passing a list of domains to be used in for the suggestions.
 - Allows passing a list of default domains that are going to be used when type `@`.
 - Closes the list by pressing <kbd>Esc</kbd>.
@@ -73,7 +74,14 @@ A Vue component for autocomplete email domains
         <td>String|Array|Object</td>
         <td>False</td>
         <td>""</td>
-        <td>Classes that will be apply to the email input.</td>
+        <td>Classes that will be apply to the email field.</td>
+    </tr>
+    <tr>
+        <td>clearable</td>
+        <td>Boolean</td>
+        <td>False</td>
+        <td>False</td>
+        <td>Show button to clean the email field.</td>
     </tr>
     </tbody>
 </table>

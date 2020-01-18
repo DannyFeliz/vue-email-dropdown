@@ -1,15 +1,13 @@
 <template>
   <div id="app">
-    <form>
       <label>Email:</label>
       <EmailDropdown
-      initialValue=""
-      :closeOnClickOutside="clickOutside"
-      :domains="domains"
-      :maxSuggestions="5"
-      :defaultDomains="defaultDomains"
-    />
-    </form>
+        initialValue=""
+        :closeOnClickOutside="clickOutside"
+        :domains="domains"
+        :maxSuggestions="5"
+        :defaultDomains="defaultDomains"
+      />
   </div>
 </template>
 

@@ -17,7 +17,8 @@ describe("EmailDropdown.vue", () => {
       domains: ["google.com"],
       defaultDomains: ["hotmail.com", "outlook.com"],
       maxSuggestions: 4,
-      closeOnClickOutside: true
+      closeOnClickOutside: true,
+      clearable: false
     };
   });
 
@@ -93,6 +94,38 @@ describe("EmailDropdown.vue", () => {
     wrapper.find("input").setValue("hello");
     await Vue.nextTick();
     expect(wrapper.find(".email-dropdown-list").exists()).to.be.false;
+  });
+
+  it("clears the email field when the x is clicked", async () => {
+    propsData.initialValue = "hello";
+    propsData.clearable = true;
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    wrapper.find("button").trigger("click");
+    await Vue.nextTick();
+    expect(wrapper.vm.$data.email).to.be.empty;
+  });
+
+  it("hides the x if the email field is clearable but empty", async () => {
+    propsData.initialValue = "";
+    propsData.clearable = true;
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    expect(wrapper.find("button").exists()).to.be.false;
+  });
+
+  it("hides the x if the input not clearable", async () => {
+    propsData.initialValue = "hello";
+    propsData.clearable = false;
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    expect(wrapper.find("button").exists()).to.be.false;
   });
 
   describe("events", () => {
