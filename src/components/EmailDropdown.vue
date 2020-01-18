@@ -1,6 +1,6 @@
 <template>
   <div class="email-dropdown-wrapper" v-click-outside="clickOutsideConfig">
-    <div>
+    <div class="input-button-wrapper">
       <input
         v-bind="$attrs"
         v-on="$listeners"
@@ -18,7 +18,7 @@
         autocomplete="off"
         autocapitalize="off"
       />
-      <button v-if="showCleanButton" @click="clearInput" value="x" />
+      <button type="reset" @click="clearInput" class="clear" />
     </div>
     <div class="email-dropdown-list-container" :class="{ hide: hasclickedOutside }">
       <ul v-if="shouldShowList" class="email-dropdown-list">
@@ -28,14 +28,16 @@
           tabindex="-1"
           :data-dropdown-item-index="index"
           class="email-dropdown-item"
-          :class="{'email-dropdown-item-focus': index === listFocusIndex && !isEmailInputFocused}"
+          :class="{ 'email-dropdown-item-focus': index === listFocusIndex && !isEmailInputFocused }"
           @click="handleOptionSelection(domain)"
           @keyup.esc="handleEscPress"
           @keyup.enter="handleOptionSelection(domain)"
           @keyup.up="handleListNavigation('up')"
           @keyup.down="handleListNavigation('down')"
           @keyup="convertCharToText"
-        >{{ emailWithoutDomain }}@{{ domain }}</li>
+        >
+          {{ emailWithoutDomain }}@{{ domain }}
+        </li>
       </ul>
     </div>
   </div>
@@ -55,10 +57,6 @@ export default {
     initialValue: {
       type: String,
       default: ""
-    },
-    showCleanButton: {
-      type: Boolean,
-      default: false
     },
     domains: {
       type: Array,
@@ -241,9 +239,8 @@ export default {
 
       return shouldFocus;
     },
-    clearInput(e) {
-      e.preventDefault();
-      this.email = '';
+    clearInput() {
+      this.email = "";
     }
   }
 };
@@ -255,6 +252,44 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-content: center;
+
+  .input-button-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+  }
+
+  input {
+    text-overflow: ellipsis;
+  }
+
+  .clear {
+    border: 1px solid transparent;
+    background-color: transparent;
+    display: inline-block;
+    vertical-align: middle;
+    outline: 0;
+    cursor: pointer;
+  }
+
+  .clear:after {
+    content: "x";
+    position: absolute;
+    width: 15px;
+    right: 30px;
+    top: 3px;
+    height: 15px;
+    z-index: 1;
+    border-radius: 50%;
+    text-align: center;
+    color: gray;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  input:valid ~ .clear {
+    display: none;
+  }
 
   .email-dropdown-list-container {
     position: relative;

@@ -84,6 +84,18 @@ describe("EmailDropdown.vue", () => {
     expect(wrapper.find(".email-dropdown-item").text()).to.be.equal("hello@gmail.com");
   });
 
+  it("clears the email field when the x is clicked", async () => {
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    wrapper.find("input").setValue("hello");
+    await Vue.nextTick();
+    wrapper.find("button").trigger("click");
+    await Vue.nextTick();
+    expect(wrapper.vm.$refs.email.value).to.be.equal("");
+  });
+
   it("hides suggestion list if remove '@' from the email", async () => {
     const wrapper = shallowMount(EmailDropdown, {
       propsData
@@ -111,21 +123,6 @@ describe("EmailDropdown.vue", () => {
       await Vue.nextTick();
       expect(wrapper.emitted().input[1]).to.have.length(1);
       expect(wrapper.emitted().input[1][0]).to.be.equal("hello@gmail.");
-    });
-
-    it("returns 'true' if input is empty after clicking clean (X) button", async () => {
-      propsData.domains = ["gmail.com", "google.com"];
-      propsData.showCleanButton = true;
-
-      const wrapper = shallowMount(EmailDropdown, {
-        propsData
-      });
-
-      wrapper.find("input").setValue("hello");      
-      await Vue.nextTick();
-      wrapper.find("button").trigger("click");      
-      await Vue.nextTick();
-      expect(wrapper.vm.$refs.email.value).to.be.equal('');
     });
   });
 
