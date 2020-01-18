@@ -139,8 +139,6 @@ describe("EmailDropdown.vue", () => {
     });
   });
 
-  describe("props", () => {});
-
   describe("computed", () => {
     describe("includesAt", () => {
       it("returns 'true' if email includes '@'", () => {
