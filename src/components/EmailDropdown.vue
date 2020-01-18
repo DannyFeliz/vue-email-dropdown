@@ -9,7 +9,6 @@
         :value="email"
         :class="inputClasses"
         @focus="handleEmailInputFocus"
-        @blur="handleEmailInputBlur"
         @input="handleInputEvent"
         @keyup.up="handleListNavigation('up')"
         @keyup.down="handleListNavigation('down')"
