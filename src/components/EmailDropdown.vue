@@ -7,7 +7,7 @@
         ref="email"
         type="email"
         :value="email"
-        :class="inputClasses"
+        :class="[inputClasses, {'is-clearable' : isClearable}]"
         @focus="handleEmailInputFocus"
         @input="handleInputEvent"
         @keyup.up="handleListNavigation('up')"
@@ -17,9 +17,11 @@
         autocomplete="off"
         autocapitalize="off"
       />
-      <button type="reset" @click="clearInput" class="clear" />
+      <button v-if="isClearable" @click="clearInput" tabindex="-1">
+        <span>&times;</span>
+      </button>
     </div>
-    <div class="email-dropdown-list-container" :class="{ hide: hasclickedOutside }">
+    <div :class="emailDropdownContainerClasses">
       <ul v-if="shouldShowList" class="email-dropdown-list">
         <li
           v-for="(domain, index) in domainsList"
@@ -32,7 +34,8 @@
           @keyup.enter="handleOptionSelection(domain)"
           @keyup.up="handleListNavigation('up')"
           @keyup.down="handleListNavigation('down')"
-          @keyup="convertCharToText">
+          @keyup="convertCharToText"
+        >
           <span class="email-dropdown-item-username">{{ username }}</span>
           <span class="email-dropdown-item-domain">@{{ domain }}</span>
         </li>
@@ -87,6 +90,10 @@ export default {
     inputClasses: {
       type: [String, Array, Object],
       default: ""
+    },
+    clearable: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -114,6 +121,13 @@ export default {
     username() {
       return this.email.toLowerCase().split("@")[0];
     },
+    emailDropdownContainerClasses() {
+      return {
+        "email-dropdown-list-container": true,
+        hide: this.hasclickedOutside,
+        "is-clearable": this.isClearable
+      };
+    },
     domain() {
       return this.email.toLowerCase().split("@")[1] || "";
     },
@@ -140,6 +154,9 @@ export default {
         .filter(domain => domain.startsWith(this.domain))
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         .slice(0, this.maxSuggestions);
+    },
+    isClearable() {
+      return Boolean(this.clearable && this.email.trim());
     }
   },
   watch: {
@@ -230,6 +247,7 @@ export default {
     },
     clearInput() {
       this.email = "";
+      this.$refs.email.focus();
     }
   }
 };
@@ -242,48 +260,45 @@ export default {
   justify-content: center;
   align-content: center;
 
-
   .input-button-wrapper {
     position: relative;
     display: flex;
     flex-direction: row;
   }
-  
+
   input {
     text-overflow: ellipsis;
+    width: 100%;
+    padding-right: 0;
+    margin-right: -4px;
+
+    &.is-clearable {
+      padding-right: 13px;
+      margin-right: 0;
+    }
   }
 
-  .clear {
-    border: 1px solid transparent;
-    background-color: transparent;
-    display: inline-block;
-    vertical-align: middle;
-    outline: 0;
+  button {
+    padding: 0;
+    margin-left: -11.8px;
+    margin-right: 0;
+    background: transparent;
+    border: none;
     cursor: pointer;
+    outline: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 
-  .clear:after {
-    content: "\00d7";
-    position: absolute;
-    width: 15px;
-    right: 30px;
-    top: 3px;
-    height: 15px;
-    z-index: 1;
-    border-radius: 50%;
-    text-align: center;
-    color: gray;
-    font-size: 12px;
-    cursor: pointer;
-  }
-
-  input:valid ~ .clear {
-    display: none;
-  }
-  
   .email-dropdown-list-container {
     position: relative;
     height: 0;
+
+    &.is-clearable {
+      margin-right: -4px;
+    }
 
     &.hide {
       display: none;
