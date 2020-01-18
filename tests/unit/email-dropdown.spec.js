@@ -85,6 +85,17 @@ describe("EmailDropdown.vue", () => {
     expect(wrapper.find(".email-dropdown-item").text()).to.be.equal("hello@gmail.com");
   });
 
+  it("hides suggestion list if remove '@' from the email", async () => {
+    const wrapper = shallowMount(EmailDropdown, {
+      propsData
+    });
+
+    expect(wrapper.findAll(".email-dropdown-item")).to.have.length(2);
+    wrapper.find("input").setValue("hello");
+    await Vue.nextTick();
+    expect(wrapper.find(".email-dropdown-list").exists()).to.be.false;
+  });
+
   it("clears the email field when the x is clicked", async () => {
     propsData.clearable = true;
     const wrapper = shallowMount(EmailDropdown, {
@@ -95,18 +106,18 @@ describe("EmailDropdown.vue", () => {
     await Vue.nextTick();
     wrapper.find("button").trigger("click");
     await Vue.nextTick();
-    expect(wrapper.vm.$refs.email.value).to.be.equal("");
+    expect(wrapper.vm.$data.email).to.be.empty;
   });
 
-  it("hides suggestion list if remove '@' from the email", async () => {
+  it("hides the x if the input not clearable", async () => {
+    propsData.clearable = false;
     const wrapper = shallowMount(EmailDropdown, {
       propsData
     });
 
-    expect(wrapper.findAll(".email-dropdown-item")).to.have.length(2);
     wrapper.find("input").setValue("hello");
     await Vue.nextTick();
-    expect(wrapper.find(".email-dropdown-list").exists()).to.be.false;
+    expect(wrapper.find("button").exists()).to.be.false;
   });
 
   describe("events", () => {
@@ -127,6 +138,8 @@ describe("EmailDropdown.vue", () => {
       expect(wrapper.emitted().input[1][0]).to.be.equal("hello@gmail.");
     });
   });
+
+  describe("props", () => {});
 
   describe("computed", () => {
     describe("includesAt", () => {
