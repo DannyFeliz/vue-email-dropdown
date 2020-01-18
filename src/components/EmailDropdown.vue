@@ -273,7 +273,7 @@ export default {
   }
 
   .clear:after {
-    content: "x";
+    content: "\00d7";
     position: absolute;
     width: 15px;
     right: 30px;
