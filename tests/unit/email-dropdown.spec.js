@@ -17,7 +17,8 @@ describe("EmailDropdown.vue", () => {
       domains: ["google.com"],
       defaultDomains: ["hotmail.com", "outlook.com"],
       maxSuggestions: 4,
-      closeOnClickOutside: true
+      closeOnClickOutside: true,
+      clearable: false
     };
   });
 
@@ -85,6 +86,7 @@ describe("EmailDropdown.vue", () => {
   });
 
   it("clears the email field when the x is clicked", async () => {
+    propsData.clearable = true;
     const wrapper = shallowMount(EmailDropdown, {
       propsData
     });
