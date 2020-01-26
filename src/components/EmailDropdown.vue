@@ -53,8 +53,15 @@ export default {
   inheritAttrs: false,
   props: {
     initialValue: {
-      type: String,
-      default: ""
+      default: "",
+      validator(value) {
+        // Since we ask for the instances of InputEvent while running the test
+        // this is a workaround
+        if (value && value.target && typeof value.target.value === "string") {
+          return true;
+        }
+        return typeof value === "string";
+      }
     },
     domains: {
       type: Array,
@@ -92,6 +99,7 @@ export default {
   data() {
     return {
       email: this.initialValue,
+      email: this.initialValue.target ? this.initialValue.target.value : this.initialValue,
       isEscPressed: false,
       listFocusIndex: 0,
       isFirstFocus: false,
@@ -155,6 +163,11 @@ export default {
       if (this.isEscPressed) {
         this.isEscPressed = false;
       }
+    },
+    initialValue(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.email = newVal.target ? newVal.target.value : newVal;
+      }
     }
   },
   methods: {
@@ -178,8 +191,8 @@ export default {
     clickOutsideHandler() {
       this.hasclickedOutside = true;
     },
-    handleInputEvent({ target: { value: email } }) {
-      this.email = email;
+    handleInputEvent(input) {
+      this.email = input.target.value;
     },
     handleOptionSelection(domain) {
       this.email = `${this.username}@${domain}`;
