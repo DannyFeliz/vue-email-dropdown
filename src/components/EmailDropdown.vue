@@ -255,7 +255,6 @@ export default {
     text-overflow: ellipsis;
     width: 100%;
     padding-right: 0;
-    margin-right: -4px;
   }
 
   button {
