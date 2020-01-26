@@ -7,7 +7,7 @@
         ref="email"
         type="email"
         :value="email"
-        :class="[inputClasses, {'is-clearable' : isClearable}]"
+        :class="inputClasses"
         @focus="handleEmailInputFocus"
         @input="handleInputEvent"
         @keyup.up="handleListNavigation('up')"
@@ -17,9 +17,6 @@
         autocomplete="off"
         autocapitalize="off"
       />
-      <button v-if="isClearable" @click="clearInput" tabindex="-1">
-        <span>&times;</span>
-      </button>
     </div>
     <div :class="emailDropdownContainerClasses">
       <ul v-if="shouldShowList" class="email-dropdown-list">
@@ -90,10 +87,6 @@ export default {
     inputClasses: {
       type: [String, Array, Object],
       default: ""
-    },
-    clearable: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -124,8 +117,7 @@ export default {
     emailDropdownContainerClasses() {
       return {
         "email-dropdown-list-container": true,
-        hide: this.hasclickedOutside,
-        "is-clearable": this.isClearable
+        hide: this.hasclickedOutside
       };
     },
     domain() {
@@ -154,9 +146,6 @@ export default {
         .filter(domain => domain.startsWith(this.domain))
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         .slice(0, this.maxSuggestions);
-    },
-    isClearable() {
-      return Boolean(this.clearable && this.email.trim());
     }
   },
   watch: {
@@ -244,10 +233,6 @@ export default {
       }
 
       return shouldFocus;
-    },
-    clearInput() {
-      this.email = "";
-      this.$refs.email.focus();
     }
   }
 };
@@ -271,11 +256,6 @@ export default {
     width: 100%;
     padding-right: 0;
     margin-right: -4px;
-
-    &.is-clearable {
-      padding-right: 13px;
-      margin-right: 0;
-    }
   }
 
   button {
@@ -295,10 +275,6 @@ export default {
   .email-dropdown-list-container {
     position: relative;
     height: 0;
-
-    &.is-clearable {
-      margin-right: -4px;
-    }
 
     &.hide {
       display: none;
