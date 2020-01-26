@@ -24,7 +24,7 @@
           v-for="(domain, index) in domainsList"
           :key="index"
           tabindex="-1"
-          :data-dropdown-item-index="index"
+          :data-dropdown-item-index="`${index}-${internalId}`"
           class="email-dropdown-item"
           @click="handleOptionSelection(domain)"
           @keyup.esc="handleEscPress"
@@ -33,8 +33,8 @@
           @keyup.down="handleListNavigation('down')"
           @keyup="convertCharToText"
         >
-          <span class="email-dropdown-item-username">{{ username }}</span>
-          <span class="email-dropdown-item-domain">@{{ domain }}</span>
+          <span class="email-dropdown-item-username">{{ username }}@</span>
+          <span class="email-dropdown-item-domain">{{ domain }}</span>
         </li>
       </ul>
     </div>
@@ -98,7 +98,9 @@ export default {
   },
   data() {
     return {
-      email: this.initialValue,
+      internalId: Math.random()
+        .toString(16)
+        .slice(2),
       email: this.initialValue.target ? this.initialValue.target.value : this.initialValue,
       isEscPressed: false,
       listFocusIndex: 0,
@@ -234,7 +236,7 @@ export default {
       }
 
       this.$nextTick(() => {
-        document.querySelector(`[data-dropdown-item-index="${this.listFocusIndex}"]`).focus();
+        document.querySelector(`[data-dropdown-item-index="${this.listFocusIndex}-${this.internalId}"]`).focus();
       });
     },
     shouldFocusInput(direction) {
